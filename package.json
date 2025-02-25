@@ -12,11 +12,15 @@
     "test:run": "vitest run"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.15",
     "@types/node": "^22.13.5",
     "@vitest/ui": "^3.0.7",
     "tsx": "^4.19.3",
     "typescript": "^5.7.3",
     "vite": "^6.2.0",
     "vitest": "^3.0.7"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }
