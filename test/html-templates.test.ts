@@ -1,5 +1,5 @@
 import {describe, expect, test} from "vitest"
-import {html} from "../src/html-templates.js"
+import {html, rawHtml} from "../src/html-templates.js"
 
 describe("html templates", () => {
 
@@ -22,6 +22,11 @@ describe("html templates", () => {
     test("escapes HTML special characters in array placeholders", () => {
         const a = ["<>&'\""]
         expect(html`${a}`).toStrictEqual({html: "&lt;&gt;&amp;&#39;&quot;"})
+    })
+
+    test("escape hatch for avoiding HTML escaping", () => {
+        const a = rawHtml("<span>foo</span>")
+        expect(html`<p>${a}</p>`).toStrictEqual({html: "<p><span>foo</span></p>"})
     })
 
     test("inserts HTML placeholders as-is", () => {
