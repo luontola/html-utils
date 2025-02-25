@@ -14,8 +14,15 @@ export function html(htmlFragments: TemplateStringsArray, ...placeholders: any[]
 }
 
 function placeholderToHtmlString(placeholder: any): string {
-    if (!placeholder) {
+    if (placeholder === null) {
         return ""
+    }
+    if (Array.isArray(placeholder)) {
+        let html = ""
+        for (const item of placeholder) {
+            html += placeholderToHtmlString(item)
+        }
+        return html
     }
     if (typeof placeholder === "object") {
         if (typeof placeholder.html === "string") {
