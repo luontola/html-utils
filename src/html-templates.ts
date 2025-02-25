@@ -4,13 +4,29 @@ interface Html {
     html: string;
 }
 
-export function html(htmlFragments: TemplateStringsArray, ...placeholders: any[]): Html {
+export function html(htmlFragments: readonly string[], ...placeholders: any[]): Html {
     let html = ""
+    htmlFragments = stripIndent(htmlFragments)
     for (let i = 0; i < htmlFragments.length; i++) {
         html += htmlFragments[i]
         html += placeholderToHtmlString(placeholders[i])
     }
     return rawHtml(html)
+}
+
+function stripIndent(htmlFragments: readonly string[]): readonly string[] {
+    if (!htmlFragments[0].startsWith("\n")) {
+        return htmlFragments
+    }
+    const match = htmlFragments[0].match(/^\s+/)
+    if (!match) {
+        return htmlFragments
+    }
+    const indent = match[0]
+    const fragments = htmlFragments.map(fragment => fragment.replaceAll(indent, "\n"))
+    fragments[0] = fragments[0].trimStart()
+    fragments[fragments.length - 1] = fragments[fragments.length - 1].trimEnd()
+    return fragments
 }
 
 function placeholderToHtmlString(placeholder: any): string {

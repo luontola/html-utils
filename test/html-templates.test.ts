@@ -52,4 +52,16 @@ describe("html templates", () => {
         const c = false
         expect(html`<p>${a} ${b} ${c}</p>`).toStrictEqual({html: "<p>1.23 true false</p>"})
     })
+
+    test("strips indent if the markup starts on a new line", () => {
+        expect(html`
+            <p>
+                ${"hello"}
+            </p>
+        `).toStrictEqual({html: "<p>\n    hello\n</p>"})
+    })
+
+    test("keeps whitespace if the markup is not indented", () => {
+        expect(html`  <p>hello</p>  `).toStrictEqual({html: "  <p>hello</p>  "})
+    })
 })
