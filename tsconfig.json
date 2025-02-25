@@ -3,6 +3,7 @@
     "target": "es2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "outDir": "dist",
     "strict": true,
     "declaration": true,
     "declarationMap": true,
