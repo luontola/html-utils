@@ -1,6 +1,6 @@
 import escapeHtml from "lodash/escape.js"
 
-interface Html {
+export interface Html {
     html: string;
 }
 

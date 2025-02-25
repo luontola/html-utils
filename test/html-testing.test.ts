@@ -1,5 +1,6 @@
 import {describe, expect, test} from "vitest"
 import {visualizeHtml} from "../src/html-testing.js"
+import {html} from "../src/html-templates.js"
 
 describe("visualizeHtml", () => {
 
@@ -35,5 +36,10 @@ describe("visualizeHtml", () => {
     test("elements with the data-test-icon attribute are replaced with its value", () => {
         expect(visualizeHtml(`<input type="checkbox" data-test-icon="☑️" checked value="true">`)).toBe("☑️")
         expect(visualizeHtml(`x<div data-test-icon="🟢">y</div>z`)).toBe("x 🟢 y z")
+    })
+
+    test("works for our HTML templates without unwrapping", () => {
+        const a = html`<p>foo</p>`
+        expect(visualizeHtml(a)).toBe("foo")
     })
 })

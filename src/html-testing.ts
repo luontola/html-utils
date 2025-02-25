@@ -1,6 +1,11 @@
-export function visualizeHtml(html: string | null | undefined): string {
+import type {Html} from "./html-templates.js"
+
+export function visualizeHtml(html: string | null | undefined | Html): string {
     if (!html) {
-        html = ""
+        return ""
+    }
+    if (typeof html !== "string") {
+        return visualizeHtml(html.html)
     }
     // custom visualization using data-test-icon attribute
     html = html.replace(/<[^<>]+\bdata-test-icon="(.*?)".*?>/g, " $1 ")
