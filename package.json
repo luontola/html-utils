@@ -1,0 +1,22 @@
+{
+  "name": "html-utils",
+  "author": "Esko Luontola",
+  "license": "Apache-2.0",
+  "description": "Utilities for using HTML on Node.js",
+  "type": "module",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "@vitest/ui": "^3.0.7",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3",
+    "vite": "^6.2.0",
+    "vitest": "^3.0.7"
+  }
+}
