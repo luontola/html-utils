@@ -44,7 +44,7 @@ function placeholderToHtmlString(placeholder: any): string {
         if (typeof placeholder.html === "string") {
             return placeholder.html
         } else {
-            return JSON.stringify(placeholder)
+            return escapeHtml(JSON.stringify(placeholder))
         }
     }
     return escapeHtml(placeholder)

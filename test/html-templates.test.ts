@@ -31,7 +31,7 @@ describe("html templates", () => {
 
     test("encodes object placeholders to JSON", () => {
         const a = {foo: 123}
-        expect(html`<p>${a}</p>`).toStrictEqual({html: "<p>{\"foo\":123}</p>"})
+        expect(html`<p>${a}</p>`).toStrictEqual({html: "<p>{&quot;foo&quot;:123}</p>"})
     })
 
     test("concatenates the elements of array placeholders", () => {
