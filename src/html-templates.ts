@@ -17,8 +17,12 @@ function placeholderToHtmlString(placeholder: any): string {
     if (!placeholder) {
         return ""
     }
-    if (typeof placeholder === "object" && typeof placeholder.html === "string") {
-        return placeholder.html
+    if (typeof placeholder === "object") {
+        if (typeof placeholder.html === "string") {
+            return placeholder.html
+        } else {
+            return JSON.stringify(placeholder)
+        }
     }
     return escapeHtml(placeholder)
 }

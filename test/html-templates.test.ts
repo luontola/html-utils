@@ -23,4 +23,9 @@ describe('html templates', () => {
         const a = html`<span>foo</span>`
         expect(html`<p>${a}</p>`).toStrictEqual({html: "<p><span>foo</span></p>"})
     })
+
+    test('encodes object placeholders to JSON', () => {
+        const a = {foo: 123}
+        expect(html`<p>${a}</p>`).toStrictEqual({html: '<p>{"foo":123}</p>'})
+    })
 })
