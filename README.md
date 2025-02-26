@@ -5,31 +5,65 @@ This project contains a couple utilities for writing and testing HTML.
 These utilities are not available on npm, but they are meant to be copy-pasted into your project. They come complete
 with unit tests, so they can be evolved to fit your project's needs.
 
-## HTML Templates
+## HTML Templating
 
-There is a tag function for tagged templates, to produce HTML without a heavy framework like React. The placeholders are
-automatically escaped to avoid XSS vulnerabilities:
+There is a tag function for writing tagged templates, to produce HTML without a heavy framework like React.
+
+The placeholders are automatically escaped to avoid XSS vulnerabilities.
 
 ```js
 const input = "<script>alert(1)</script>"
 const output = html`<p>Hello ${input}</p>`
-console.log(output.html)
+expect(output.html).toBe("<p>Hello &lt;script&gt;alert(1)&lt;/script&gt;</p>")
 ```
 
-The above example will output `"<p>Hello &lt;script&gt;alert(1)&lt;/script&gt;</p>"`
+You can create components using plain old functions. Works great with [htmx](https://htmx.org/).
+
+```js
+function homePage() {
+    return html`
+        <h1>Welcome</h1>
+        <p>${clickerButton()}</p>
+    `
+}
+
+function clickerButton(counter: number = 0) {
+    return html`
+        <button hx-get="/clicker?counter=${counter + 1}"
+                hx-target="this"
+                hx-swap="outerHTML">
+            Clicked ${counter} times
+        </button>
+    `
+}
+```
 
 See [html-templates.ts](src/html-templates.ts) and [html-templates.test.ts](test/html-templates.test.ts)
 
-## Testing Tools
+## Unit Testing the UI
 
-There is a helper function for extracting the visible text from HTML, to easily unit test HTML templates. If you add the
-`data-test-icon` attribute to an element, the element will be replaced with its value. This enables testing non-textual
-information using
-the [stringly asserted](https://martinfowler.com/articles/tdd-html-templates.html#BonusLevelStringlyAsserted) style.
+There is a helper function for extracting the visible text from HTML, to easily unit test HTML templates.
+
+The components mentioned in the previous section could be unit tested like this:
+
+```js
+expect(visualizeHtml(homePage())).toBe(normalizeWhitespace(`
+        Welcome
+        Clicked 0 times`))
+
+let button = clickerButton(5)
+expect(visualizeHtml(button)).toBe(normalizeWhitespace("Clicked 5 times"))
+expect(button.html).toContain(`hx-get="/clicker?counter=6"`)
+```
+
+By default `visualizeHtml` strips all HTML tags.
+But if you add a `data-test-icon` attribute to an element, the element will be replaced with its value.
+This enables [stringly asserted](https://martinfowler.com/articles/tdd-html-templates.html#BonusLevelStringlyAsserted)
+testing to assert non-textual information.
 
 ```js
 expect(visualizeHtml("<p>one</p><p>two</p>")).toBe("one two")
-expect(visualizeHtml(`<input type="checkbox" data-test-icon="☑️" checked>`)).toBe("☑️")
+expect(visualizeHtml(`<input type="checkbox" checked data-test-icon="☑️">`)).toBe("☑️")
 ```
 
 See [html-testing.ts](src/html-testing.ts) and [html-testing.test.ts](test/html-testing.test.ts)
