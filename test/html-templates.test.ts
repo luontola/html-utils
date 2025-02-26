@@ -1,6 +1,8 @@
 import {describe, expect, test} from "vitest"
 import {html, rawHtml} from "../src/html-templates.js"
 
+// Vendored from https://github.com/luontola/html-utils
+
 describe("html templates", () => {
 
     test("static html", () => {

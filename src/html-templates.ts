@@ -1,5 +1,7 @@
 import escapeHtml from "lodash/escape.js"
 
+// Vendored from https://github.com/luontola/html-utils
+
 export interface Html {
     html: string;
 }

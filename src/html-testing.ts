@@ -1,5 +1,7 @@
 import type {Html} from "./html-templates.js"
 
+// Vendored from https://github.com/luontola/html-utils
+
 export function visualizeHtml(html: string | null | undefined | Html): string {
     if (!html) {
         return ""

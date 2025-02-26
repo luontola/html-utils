@@ -2,6 +2,8 @@ import {describe, expect, test} from "vitest"
 import {visualizeHtml} from "../src/html-testing.js"
 import {html} from "../src/html-templates.js"
 
+// Vendored from https://github.com/luontola/html-utils
+
 describe("visualizeHtml", () => {
 
     test("empty input", () => {
