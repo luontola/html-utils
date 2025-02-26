@@ -51,8 +51,8 @@ expect(visualizeHtml(homePage())).toBe(normalizeWhitespace(`
         Welcome
         Clicked 0 times`))
 
-let button = clickerButton(5)
-expect(visualizeHtml(button)).toBe(normalizeWhitespace("Clicked 5 times"))
+const button = clickerButton(5)
+expect(visualizeHtml(button)).toBe("Clicked 5 times")
 expect(button.html).toContain(`hx-get="/clicker?counter=6"`)
 ```
 
