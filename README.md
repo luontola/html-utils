@@ -67,3 +67,18 @@ expect(visualizeHtml(`<input type="checkbox" checked data-test-icon="☑️">`))
 ```
 
 See [html-testing.ts](src/html-testing.ts) and [html-testing.test.ts](test/html-testing.test.ts)
+
+## Installing
+
+To use this library, download it to be part of your project:
+
+```
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-templates.ts
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/test/html-templates.test.ts
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing.ts
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/test/html-testing.test.ts
+```
+
+In particular, the testing library often benefits from project-specific customizations.
+Also, you wouldn't want to be [left-padded](https://en.wikipedia.org/wiki/Npm_left-pad_incident) because of just 50
+lines of code, would you?
