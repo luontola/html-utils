@@ -80,5 +80,9 @@ wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/test/
 ```
 
 In particular, the testing library often benefits from project-specific customizations.
-Also, you wouldn't want to be [left-padded](https://en.wikipedia.org/wiki/Npm_left-pad_incident) because of just 50
-lines of code, would you?
+
+This library is [finished software](https://josem.co/the-beauty-of-finished-software/), so there is no need to get
+constant updates to it.
+No new features is a feature in itself.
+You wouldn't want to be [left-padded](https://en.wikipedia.org/wiki/Npm_left-pad_incident) because of just 50 lines of
+code, would you?
