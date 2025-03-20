@@ -1,7 +1,7 @@
 import type {Html} from "./html-templates.js"
 import type React from "react"
 import {isValidElement} from "react"
-import {renderToString} from "react-dom/server"
+import {renderToStaticMarkup} from "react-dom/server"
 
 // Vendored from https://github.com/luontola/html-utils
 
@@ -16,7 +16,7 @@ export function visualizeHtml(html: string | null | undefined | Html | React.Rea
         }
         // support React
         if (isValidElement(html)) {
-            return visualizeHtml(renderToString(html))
+            return visualizeHtml(renderToStaticMarkup(html))
         }
         throw new TypeError() // should be unreachable
     }
