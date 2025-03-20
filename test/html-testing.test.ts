@@ -1,6 +1,8 @@
 import {describe, expect, test} from "vitest"
 import {visualizeHtml} from "../src/html-testing.js"
 import {html} from "../src/html-templates.js"
+import React from "react"
+import {renderToString} from "react-dom/server"
 
 // Vendored from https://github.com/luontola/html-utils
 
@@ -42,6 +44,12 @@ describe("visualizeHtml", () => {
 
     test("works for our HTML templates without unwrapping", () => {
         const a = html`<p>foo</p>`
+        expect(visualizeHtml(a)).toBe("foo")
+    })
+
+    test("works for React elements", () => {
+        const a = React.createElement("p", null, "foo")
+        expect(renderToString(a)).toBe("<p>foo</p>")
         expect(visualizeHtml(a)).toBe("foo")
     })
 })

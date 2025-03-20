@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/lodash": "^4.17.15",
     "@types/node": "^22.13.5",
+    "@types/react-dom": "^19.0.4",
     "@vitest/ui": "^3.0.7",
     "tsx": "^4.19.3",
     "typescript": "^5.7.3",
@@ -22,6 +23,7 @@
     "vitest": "^3.0.7"
   },
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "react-dom": "^19.0.0"
   }
 }

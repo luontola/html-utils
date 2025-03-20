@@ -66,6 +66,9 @@ expect(visualizeHtml("<p>one</p><p>two</p>")).toBe("one two")
 expect(visualizeHtml(`<input type="checkbox" checked data-test-icon="☑️">`)).toBe("☑️")
 ```
 
+In addition to raw HTML and [our HTML templates](#html-templating), `visualizeHtml` works also for React elements.
+If you use only one of them, you can delete a few lines from `visualizeHtml` to remove the unnecessary dependency.
+
 See [html-testing.ts](src/html-testing.ts) and [html-testing.test.ts](test/html-testing.test.ts)
 
 ## Installing
