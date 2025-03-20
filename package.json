@@ -7,9 +7,9 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run",
     "test:ui": "vitest --ui",
-    "test:run": "vitest run",
+    "autotest": "vitest watch",
     "lint": "tsc"
   },
   "devDependencies": {

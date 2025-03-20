@@ -2,4 +2,4 @@
 set -euxo pipefail
 
 npm run lint
-npm run test:run
+npm run test
