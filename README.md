@@ -1,6 +1,6 @@
-# HTML Utilities for Node.js
+# Esko's HTML Utils
 
-This project contains a couple utilities for writing and testing HTML.
+This project contains a couple utilities for writing and testing HTML in JavaScript/Node.js.
 
 These utilities are not available on npm, but they are meant to be copy-pasted into your project. They come complete
 with unit tests, so they can be evolved to fit your project's needs.
