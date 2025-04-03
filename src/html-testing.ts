@@ -21,9 +21,9 @@ export function visualizeHtml(html: string | null | undefined | Html | React.Rea
         throw new TypeError() // should be unreachable
     }
     // custom visualization using data-test-icon attribute
-    html = html.replace(/<[^<>]+\bdata-test-icon="(.*?)".*?>/g, " $1 ")
+    html = html.replace(/<[^<>]+\bdata-test-icon="(.*?)".*?>/sg, " $1 ")
     // strip all HTML tags
-    html = html.replace(/<\/?(a|abbr|b|big|cite|code|em|i|small|span|strong|tt)\b.*?>/g, "") // inline elements
+    html = html.replace(/<\/?(a|abbr|b|big|cite|code|em|i|small|span|strong|tt)\b.*?>/sg, "") // inline elements
         .replace(/<[^>]*>/g, " ")  // block elements
     // replace HTML character entities
     html = html.replace(/&nbsp;/g, " ")
