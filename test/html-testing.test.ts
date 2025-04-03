@@ -28,6 +28,23 @@ describe("visualizeHtml", () => {
         expect(visualizeHtml(`x<a\nhref=""\n>y</a>z`), "works with newlines between attributes").toBe("xyz")
     })
 
+    test("hides style elements", () => {
+        expect(visualizeHtml(`
+            <style>
+                p { color: red; }
+            </style>`)).toBe("")
+        expect(visualizeHtml(`
+            <style type="text/css">
+                p { color: red; }
+            </style>`), "with type attribute").toBe("")
+    })
+
+    test("hides comments", () => {
+        expect(visualizeHtml("<!-- foo -->")).toBe("")
+        expect(visualizeHtml("<!-- > -->"), "matches until the end of comment, instead of the first > character").toBe("")
+        expect(visualizeHtml("<!--\n>\n-->"), "works with newlines in the comment").toBe("")
+    })
+
     test("replaces HTML character entities", () => {
         expect(visualizeHtml("1&nbsp;000")).toBe("1 000")
         expect(visualizeHtml("&lt;")).toBe("<")

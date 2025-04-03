@@ -22,6 +22,9 @@ export function visualizeHtml(html: string | null | undefined | Html | React.Rea
     }
     // custom visualization using data-test-icon attribute
     html = html.replace(/<[^<>]+\bdata-test-icon="(.*?)".*?>/sg, " $1 ")
+    // hidden elements
+    html = html.replace(/<style\b.*?>.*?<\/style>/sg, "")
+    html = html.replace(/<!--.*?-->/sg, "")
     // strip all HTML tags
     html = html.replace(/<\/?(a|abbr|b|big|cite|code|em|i|small|span|strong|tt)\b.*?>/sg, "") // inline elements
         .replace(/<[^>]*>/g, " ")  // block elements
