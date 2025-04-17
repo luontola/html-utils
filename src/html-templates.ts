@@ -64,19 +64,7 @@ export function attrs(params: { [k: string]: any } | Map<string, any>): Html {
         }
         html += escapeHtml(key)
         if (value !== true) {
-            html += `="`
-            if (Array.isArray(value)) {
-                html += value.filter(visibleAttr).map(escapeHtml).join(" ")
-            } else if (typeof value === "object") {
-                if (key === "style") {
-                    html += inlineStyle(value)
-                } else {
-                    html += escapeHtml(JSON.stringify(value))
-                }
-            } else {
-                html += escapeHtml(value)
-            }
-            html += `"`
+            html += `="${attributeValueToHtmlString(key, value)}"`
         }
     }
     return rawHtml(html)
@@ -84,6 +72,19 @@ export function attrs(params: { [k: string]: any } | Map<string, any>): Html {
 
 function visibleAttr(value: any): boolean {
     return value !== false && value !== null && value !== undefined
+}
+
+function attributeValueToHtmlString(key: string, value: any) {
+    if (typeof value === "object") {
+        if (Array.isArray(value)) {
+            return value.filter(visibleAttr).map(escapeHtml).join(" ")
+        }
+        if (key === "style") {
+            return inlineStyle(value)
+        }
+        return escapeHtml(JSON.stringify(value))
+    }
+    return escapeHtml(value)
 }
 
 function inlineStyle(m: { [p: string]: any } | Map<string, any>): string {
