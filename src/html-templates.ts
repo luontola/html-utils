@@ -47,6 +47,26 @@ function placeholderToHtmlString(placeholder: any): string {
     return escapeHtml(placeholder)
 }
 
+export function attrs(params: { [k: string]: any } | Map<string, any>): Html {
+    const entries = params instanceof Map
+        ? params.entries()
+        : Object.entries(params)
+    let html = ""
+    for (const [key, value] of entries) {
+        if (value === false || value === null || value === undefined) {
+            continue
+        }
+        if (html.length > 0) {
+            html += " "
+        }
+        html += escapeHtml(key)
+        if (value !== true) {
+            html += `="${escapeHtml(value)}"`
+        }
+    }
+    return rawHtml(html)
+}
+
 export function rawHtml(html: string): Html {
     return {html}
 }

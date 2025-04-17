@@ -1,5 +1,5 @@
 import {describe, expect, test} from "vitest"
-import {html, rawHtml} from "./html-templates.js"
+import {attrs, html, rawHtml} from "./html-templates.js"
 
 // Vendored from https://github.com/luontola/html-utils
 
@@ -70,5 +70,37 @@ describe("html templates", () => {
 
     test("keeps whitespace if the markup is not indented", () => {
         expect(html`  <p>hello</p>  `).toStrictEqual({html: "  <p>hello</p>  "})
+    })
+})
+
+describe("attrs helper", () => {
+
+    test("converts objects to an attribute list", () => {
+        expect(html`<p ${attrs({class: "foo"})}></p>`).toStrictEqual({html: `<p class="foo"></p>`})
+    })
+
+    test("converts maps to an attribute list", () => {
+        const m = new Map()
+        m.set("class", "foo")
+        expect(html`<p ${attrs(m)}></p>`).toStrictEqual({html: `<p class="foo"></p>`})
+    })
+
+    test("escapes HTML special characters in keys and values", () => {
+        const a = "<>&'\""
+        expect(attrs({[a]: a})).toStrictEqual({html: `&lt;&gt;&amp;&#39;&quot;="&lt;&gt;&amp;&#39;&quot;"`})
+    })
+
+    test("supports multiple attributes", () => {
+        expect(attrs({foo: "1", bar: "2"})).toStrictEqual({html: `foo="1" bar="2"`})
+    })
+
+    test("supports boolean attributes", () => {
+        expect(attrs({checked: true}), "true").toStrictEqual({html: `checked`})
+        expect(attrs({checked: false}), "false").toStrictEqual({html: ``})
+    })
+
+    test("hides null and undefined attributes", () => {
+        expect(attrs({foo: null}), "null").toStrictEqual({html: ``})
+        expect(attrs({foo: undefined}), "undefined").toStrictEqual({html: ``})
     })
 })
