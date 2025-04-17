@@ -1,6 +1,6 @@
 import {describe, expect, test} from "vitest"
 import {normalizeWhitespace, visualizeHtml} from "./html-testing.js"
-import {html} from "./html-templates.js"
+import {attrs, html} from "./html-templates.js"
 
 function homePage() {
     return html`
@@ -25,6 +25,26 @@ describe("examples", () => {
         const input = "<script>alert(1)</script>"
         const output = html`<p>Hello ${input}</p>`
         expect(output.html).toBe("<p>Hello &lt;script&gt;alert(1)&lt;/script&gt;</p>")
+    })
+
+    test("attrs helper", () => {
+        const name = "fruits"
+        const value = "banana"
+        const currentValue = "banana"
+        expect(html`
+            <input type="radio" ${attrs({name, value, checked: currentValue === value})}>
+        `.html).toBe(`<input type="radio" name="fruits" value="banana" checked>`)
+
+        const toggle = false
+        expect(html`
+            <p ${attrs({
+                class: ["foo", "bar", toggle && "gazonk"],
+                style: {
+                    border: "1px solid blue",
+                    "background-color": "red",
+                },
+            })}></p>
+        `.html).toBe(`<p class="foo bar" style="border: 1px solid blue; background-color: red"></p>`)
     })
 
     test("testing components", () => {

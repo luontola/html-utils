@@ -7,7 +7,7 @@ with unit tests, so they can be evolved to fit your project's needs.
 
 ## HTML Templating
 
-There is a tag function for writing tagged templates, to produce HTML without a heavy framework like React.
+There is a `html` tag function for writing tagged templates, to produce HTML without a heavy framework like React.
 
 The placeholders are automatically escaped to avoid XSS vulnerabilities.
 
@@ -16,6 +16,8 @@ const input = "<script>alert(1)</script>"
 const output = html`<p>Hello ${input}</p>`
 expect(output.html).toBe("<p>Hello &lt;script&gt;alert(1)&lt;/script&gt;</p>")
 ```
+
+### Components
 
 You can create components using plain old functions. Works great with [htmx](https://htmx.org/).
 
@@ -38,11 +40,43 @@ function clickerButton(counter: number = 0) {
 }
 ```
 
+### Attributes
+
+If you need to only parameterize the value of an attribute, the `html` template is enough on its own.
+
+But if you need to also toggle attributes at runtime, there is an optional `attrs` helper function.
+
+```js
+const name = "fruits"
+const value = "banana"
+const currentValue = "banana"
+expect(html`
+    <input type="radio" ${attrs({name, value, checked: currentValue === value})}>
+`.html).toBe(`<input type="radio" name="fruits" value="banana" checked>`)
+```
+
+It has some convenience features for toggling CSS classes and writing inline styles.
+
+```js
+const toggle = false
+expect(html`
+    <p ${attrs({
+    class: ["foo", "bar", toggle && "gazonk"],
+    style: {
+        border: "1px solid blue",
+        "background-color": "red",
+    },
+})}></p>
+`.html).toBe(`<p class="foo bar" style="border: 1px solid blue; background-color: red"></p>`)
+```
+
+Read the tests to learn more what this templating library can do.
+
 See [html-templates.ts](src/html-templates.ts) and [html-templates.test.ts](src/html-templates.test.ts)
 
 ## Unit Testing the UI
 
-There is a helper function for extracting the visible text from HTML, to easily unit test HTML templates.
+There is a `visualizeHtml` function for extracting the visible text from HTML, to easily unit test HTML templates.
 
 The components mentioned in the previous section could be unit tested like this:
 
