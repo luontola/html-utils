@@ -53,7 +53,7 @@ export function attrs(params: { [k: string]: any } | Map<string, any>): Html {
         : Object.entries(params)
     let html = ""
     for (const [key, value] of entries) {
-        if (value === false || value === null || value === undefined) {
+        if (!visibleAttr(value)) {
             continue
         }
         if (html.length > 0) {
@@ -61,10 +61,20 @@ export function attrs(params: { [k: string]: any } | Map<string, any>): Html {
         }
         html += escapeHtml(key)
         if (value !== true) {
-            html += `="${escapeHtml(value)}"`
+            html += `="`
+            if (Array.isArray(value)) {
+                html += value.filter(visibleAttr).map(escapeHtml).join(" ")
+            } else {
+                html += escapeHtml(value)
+            }
+            html += `"`
         }
     }
     return rawHtml(html)
+}
+
+function visibleAttr(value: any): boolean {
+    return value !== false && value !== null && value !== undefined
 }
 
 export function rawHtml(html: string): Html {

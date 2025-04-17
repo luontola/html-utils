@@ -88,6 +88,7 @@ describe("attrs helper", () => {
     test("escapes HTML special characters in keys and values", () => {
         const a = "<>&'\""
         expect(attrs({[a]: a})).toStrictEqual({html: `&lt;&gt;&amp;&#39;&quot;="&lt;&gt;&amp;&#39;&quot;"`})
+        expect(attrs({array: [a]})).toStrictEqual({html: `array="&lt;&gt;&amp;&#39;&quot;"`})
     })
 
     test("supports multiple attributes", () => {
@@ -102,5 +103,18 @@ describe("attrs helper", () => {
     test("hides null and undefined attributes", () => {
         expect(attrs({foo: null}), "null").toStrictEqual({html: ``})
         expect(attrs({foo: undefined}), "undefined").toStrictEqual({html: ``})
+    })
+
+    test("CSS classes can be put in an array", () => {
+        expect(attrs({class: ["foo", "bar", "gazonk"]})).toStrictEqual({html: `class="foo bar gazonk"`})
+        const toggle = true
+        expect(attrs({
+            class: [
+                toggle && "foo",
+                !toggle && "bar",
+                null,
+                undefined,
+                "gazonk"],
+        }), "dynamically toggled classes").toStrictEqual({html: `class="foo gazonk"`})
     })
 })
