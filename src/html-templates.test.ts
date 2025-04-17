@@ -135,6 +135,19 @@ describe("attrs helper", () => {
         m.set("border", "1px solid red")
         expect(attrs({style: {border: "1px solid red"}}), "maps are also supported")
             .toStrictEqual({html: `style="border: 1px solid red"`})
+
+        expect(attrs({
+            style: {
+                // The following values can be used to toggle a CSS property
+                a: null,
+                b: undefined,
+                c: false,
+                // Though true and numbers are implicitly converted to a string,
+                // it's recommended to use only string values
+                d: true,
+                e: 1,
+            },
+        }), "dynamically toggled properties").toStrictEqual({html: `style="d: true; e: 1"`})
     })
 
     test("for other properties, objects are encoded as JSON", () => {

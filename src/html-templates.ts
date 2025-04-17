@@ -70,11 +70,7 @@ export function attrs(params: { [k: string]: any } | Map<string, any>): Html {
     return rawHtml(html)
 }
 
-function visibleAttr(value: any): boolean {
-    return value !== false && value !== null && value !== undefined
-}
-
-function attributeValueToHtmlString(key: string, value: any) {
+function attributeValueToHtmlString(key: string, value: any): string {
     if (typeof value === "object") {
         if (Array.isArray(value)) {
             return value.filter(visibleAttr).map(escapeHtml).join(" ")
@@ -90,12 +86,19 @@ function attributeValueToHtmlString(key: string, value: any) {
 function inlineStyle(m: { [p: string]: any } | Map<string, any>): string {
     let html = ""
     for (const [key, value] of mapEntries(m)) {
+        if (!visibleAttr(value)) {
+            continue
+        }
         if (html.length > 0) {
             html += "; "
         }
         html += `${escapeHtml(key)}: ${escapeHtml(value)}`
     }
     return html
+}
+
+function visibleAttr(value: any): boolean {
+    return value !== false && value !== null && value !== undefined
 }
 
 function mapEntries(m: { [p: string]: any } | Map<string, any>) {
