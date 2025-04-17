@@ -88,7 +88,8 @@ describe("attrs helper", () => {
     test("escapes HTML special characters in keys and values", () => {
         const a = "<>&'\""
         expect(attrs({[a]: a})).toStrictEqual({html: `&lt;&gt;&amp;&#39;&quot;="&lt;&gt;&amp;&#39;&quot;"`})
-        expect(attrs({array: [a]})).toStrictEqual({html: `array="&lt;&gt;&amp;&#39;&quot;"`})
+        expect(attrs({class: [a]})).toStrictEqual({html: `class="&lt;&gt;&amp;&#39;&quot;"`})
+        expect(attrs({style: {[a]: a}})).toStrictEqual({html: `style="&lt;&gt;&amp;&#39;&quot;: &lt;&gt;&amp;&#39;&quot;"`})
     })
 
     test("supports multiple attributes", () => {
@@ -107,6 +108,7 @@ describe("attrs helper", () => {
 
     test("CSS classes can be put in an array", () => {
         expect(attrs({class: ["foo", "bar", "gazonk"]})).toStrictEqual({html: `class="foo bar gazonk"`})
+
         const toggle = true
         expect(attrs({
             class: [
@@ -116,5 +118,30 @@ describe("attrs helper", () => {
                 undefined,
                 "gazonk"],
         }), "dynamically toggled classes").toStrictEqual({html: `class="foo gazonk"`})
+
+        expect(attrs({"aria-labelledby": ["foo", "bar"]}), "other properties are also supported")
+            .toStrictEqual({html: `aria-labelledby="foo bar"`})
+    })
+
+    test("CSS inline styles can be put in an object", () => {
+        expect(attrs({
+            style: {
+                border: "1px solid red",
+                "background-color": "blue",
+            },
+        })).toStrictEqual({html: `style="border: 1px solid red; background-color: blue"`})
+
+        const m = new Map()
+        m.set("border", "1px solid red")
+        expect(attrs({style: {border: "1px solid red"}}), "maps are also supported")
+            .toStrictEqual({html: `style="border: 1px solid red"`})
+    })
+
+    test("for other properties, objects are encoded as JSON", () => {
+        expect(attrs({
+            "hx-headers": {
+                "x-csrf-token": "abc123",
+            },
+        })).toStrictEqual({html: `hx-headers="{&quot;x-csrf-token&quot;:&quot;abc123&quot;}"`})
     })
 })

@@ -6,6 +6,9 @@ export interface Html {
     html: string;
 }
 
+/**
+ * Generates an HTML string. Escapes HTML special characters in string placeholders.
+ */
 export function html(htmlFragments: readonly string[], ...placeholders: any[]): Html {
     let html = ""
     htmlFragments = stripIndent(htmlFragments)
@@ -47,12 +50,12 @@ function placeholderToHtmlString(placeholder: any): string {
     return escapeHtml(placeholder)
 }
 
+/**
+ * Generates an HTML attribute list.
+ */
 export function attrs(params: { [k: string]: any } | Map<string, any>): Html {
-    const entries = params instanceof Map
-        ? params.entries()
-        : Object.entries(params)
     let html = ""
-    for (const [key, value] of entries) {
+    for (const [key, value] of mapEntries(params)) {
         if (!visibleAttr(value)) {
             continue
         }
@@ -64,6 +67,12 @@ export function attrs(params: { [k: string]: any } | Map<string, any>): Html {
             html += `="`
             if (Array.isArray(value)) {
                 html += value.filter(visibleAttr).map(escapeHtml).join(" ")
+            } else if (typeof value === "object") {
+                if (key === "style") {
+                    html += inlineStyle(value)
+                } else {
+                    html += escapeHtml(JSON.stringify(value))
+                }
             } else {
                 html += escapeHtml(value)
             }
@@ -77,6 +86,26 @@ function visibleAttr(value: any): boolean {
     return value !== false && value !== null && value !== undefined
 }
 
+function inlineStyle(m: { [p: string]: any } | Map<string, any>): string {
+    let html = ""
+    for (const [key, value] of mapEntries(m)) {
+        if (html.length > 0) {
+            html += "; "
+        }
+        html += `${escapeHtml(key)}: ${escapeHtml(value)}`
+    }
+    return html
+}
+
+function mapEntries(m: { [p: string]: any } | Map<string, any>) {
+    return m instanceof Map
+        ? m.entries()
+        : Object.entries(m)
+}
+
+/**
+ * Generates an HTML string without escaping HTML special characters.
+ */
 export function rawHtml(html: string): Html {
     return {html}
 }
