@@ -38,7 +38,7 @@ function clickerButton(counter: number = 0) {
 }
 ```
 
-See [html-templates.ts](src/html-templates.ts) and [html-templates.test.ts](test/html-templates.test.ts)
+See [html-templates.ts](src/html-templates.ts) and [html-templates.test.ts](src/html-templates.test.ts)
 
 ## Unit Testing the UI
 
@@ -69,7 +69,7 @@ expect(visualizeHtml(`<input type="checkbox" checked data-test-icon="☑️">`))
 In addition to raw HTML and [our HTML templates](#html-templating), `visualizeHtml` works also for React elements.
 If you use only one of them, you can delete a few lines from `visualizeHtml` to remove the unnecessary dependency.
 
-See [html-testing.ts](src/html-testing.ts) and [html-testing.test.ts](test/html-testing.test.ts)
+See [html-testing.ts](src/html-testing.ts) and [html-testing.test.ts](src/html-testing.test.ts)
 
 ## Installing
 
@@ -77,9 +77,9 @@ To use this library, download it to be part of your project:
 
 ```
 wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-templates.ts
-wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/test/html-templates.test.ts
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-templates.test.ts
 wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing.ts
-wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/test/html-testing.test.ts
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing.test.ts
 ```
 
 In particular, the testing library often benefits from project-specific customizations.

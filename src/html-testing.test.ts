@@ -1,6 +1,6 @@
 import {describe, expect, test} from "vitest"
-import {visualizeHtml} from "../src/html-testing.js"
-import {html} from "../src/html-templates.js"
+import {visualizeHtml} from "./html-testing.js"
+import {html} from "./html-templates.js"
 import React from "react"
 import {renderToStaticMarkup} from "react-dom/server"
 

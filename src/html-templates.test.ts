@@ -1,5 +1,5 @@
 import {describe, expect, test} from "vitest"
-import {html, rawHtml} from "../src/html-templates.js"
+import {html, rawHtml} from "./html-templates.js"
 
 // Vendored from https://github.com/luontola/html-utils
 

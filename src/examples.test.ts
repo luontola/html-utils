@@ -1,6 +1,6 @@
 import {describe, expect, test} from "vitest"
-import {normalizeWhitespace, visualizeHtml} from "../src/html-testing.js"
-import {html} from "../src/html-templates.js"
+import {normalizeWhitespace, visualizeHtml} from "./html-testing.js"
+import {html} from "./html-templates.js"
 
 function homePage() {
     return html`
