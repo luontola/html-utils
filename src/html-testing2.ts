@@ -2,10 +2,6 @@ import type {Html} from "./html-templates.js"
 import type React from "react"
 import {isValidElement} from "react"
 import {renderToStaticMarkup} from "react-dom/server"
-import {JSDOM} from "jsdom"
-
-let jsdom = new JSDOM()
-const DOMParser = jsdom.window.DOMParser
 
 // Vendored from https://github.com/luontola/html-utils
 
@@ -56,7 +52,7 @@ export function visualizeHtml(html: string | null | undefined | Html | React.Rea
 }
 
 function iterateComments(document: Document, callback: (node: Comment) => void) {
-    const nodeIterator = document.createNodeIterator(document, jsdom.window.NodeFilter.SHOW_COMMENT)
+    const nodeIterator = document.createNodeIterator(document, NodeFilter.SHOW_COMMENT)
     let currentNode: Node | null = null
     while ((currentNode = nodeIterator.nextNode())) {
         callback(currentNode as Comment)
