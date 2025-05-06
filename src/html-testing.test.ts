@@ -56,9 +56,10 @@ describe("visualizeHtml", () => {
         expect(visualizeHtml("&#39;")).toBe("'")
     })
 
-    test("elements with the data-test-icon attribute are replaced with its value", () => {
+    test("data-test-icon attribute is shown before the element", () => {
         expect(visualizeHtml(`<input type="checkbox" data-test-icon="☑️" checked value="true">`)).toBe("☑️")
-        expect(visualizeHtml(`x<div data-test-icon="🟢">y</div>z`), "adds spacing before, inside and after an element").toBe("x 🟢 y z")
+        expect(visualizeHtml(`x<div data-test-icon="🟢">y</div>z`), "spacing, block elements").toBe("x 🟢 y z")
+        expect(visualizeHtml(`x<span data-test-icon="🟢">y</span>z`), "spacing, inline elements").toBe("x 🟢 yz")
         expect(visualizeHtml(`<div\ndata-test-icon="🟢"\n></div>`), "works with newlines between attributes").toBe("🟢")
     })
 

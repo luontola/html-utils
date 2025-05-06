@@ -31,6 +31,11 @@ export function visualizeHtml(html: string | null | undefined | Element | Html |
         el.before(` ${el.getAttribute("data-test-icon")} `)
     })
 
+    // custom visualization using data-test-content attribute
+    document.querySelectorAll("[data-test-content]").forEach(el => {
+        el.textContent = el.getAttribute("data-test-content")
+    })
+
     // hidden elements
     document.querySelectorAll("style").forEach(el => {
         el.remove()
