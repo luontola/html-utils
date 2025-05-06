@@ -100,22 +100,36 @@ expect(visualizeHtml("<p>one</p><p>two</p>")).toBe("one two")
 expect(visualizeHtml(`<input type="checkbox" checked data-test-icon="☑️">`)).toBe("☑️")
 ```
 
-In addition to raw HTML and [our HTML templates](#html-templating), `visualizeHtml` works also for React elements.
-If you use only one of them, you can delete a few lines from `visualizeHtml` to remove the unnecessary dependency.
+In addition to DOM elements, HTML strings and [our HTML templates](#html-templating), `visualizeHtml` works also for
+React elements.
+If you use only one templating library, you can delete a few lines from `visualizeHtml` to remove the other dependency.
 
 See [html-testing.ts](src/html-testing.ts) and [html-testing.test.ts](src/html-testing.test.ts)
 
+### Advanced Implementation
+
+The previous `visualizeHtml` is implemented using just regular expressions.
+Regular expressions are fast and portable, but they have limited expressiveness.
+
+In [html-testing2.ts](src/html-testing2.ts) there is a parser-based implementation of `visualizeHtml`.
+It adds support for a `data-test-content` attribute that will replace the whole element, including its children:
+
+```js
+expect(visualizeHtml2(`<textarea data-test-content="[foo]">foo</textarea>`)).toBe("[foo]")
+expect(visualizeHtml2(`
+   <select name="pets" data-test-content="[Cats]">
+       <option value=""></option>
+       <option value="cats" selected>Cats</option>
+       <option value="dogs">Dogs</option>
+   </select>
+`)).toBe("[Cats]")
+```
+
+See [html-testing2.ts](src/html-testing2.ts) and [html-testing2.test.ts](src/html-testing2.test.ts)
+
 ## Installing
 
-To use this library, download it to be part of your project:
-
-```
-wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-templates.ts
-wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-templates.test.ts
-wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing.ts
-wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing.test.ts
-```
-
+To use this library, download it to be part of your project.
 In particular, the testing library often benefits from project-specific customizations.
 
 This library is [finished software](https://josem.co/the-beauty-of-finished-software/), so there is no need to get
@@ -123,3 +137,24 @@ constant updates to it.
 No new features is a feature in itself.
 You wouldn't want to be [left-padded](https://en.wikipedia.org/wiki/Npm_left-pad_incident) because of just 50 lines of
 code, would you?
+
+### Templating Library
+
+```shell
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-templates.ts
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-templates.test.ts
+```
+
+### Basic Testing Library
+
+```shell
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing.ts
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing.test.ts
+```
+
+### Advanced Testing Library
+
+```shell
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing2.ts
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing2.test.ts
+```

@@ -1,5 +1,6 @@
 import {describe, expect, test} from "vitest"
 import {normalizeWhitespace, visualizeHtml} from "./html-testing.js"
+import {visualizeHtml as visualizeHtml2} from "./html-testing2.js"
 import {attrs, html} from "./html-templates.js"
 
 function homePage() {
@@ -60,5 +61,16 @@ describe("examples", () => {
     test("visualizeHtml and data-test-icon", () => {
         expect(visualizeHtml("<p>one</p><p>two</p>")).toBe("one two")
         expect(visualizeHtml(`<input type="checkbox" checked data-test-icon="☑️">`)).toBe("☑️")
+    })
+
+    test("visualizeHtml2 and data-test-content", () => {
+        expect(visualizeHtml2(`<textarea data-test-content="[foo]">foo</textarea>`)).toBe("[foo]")
+        expect(visualizeHtml2(`
+           <select name="pets" data-test-content="[Cats]">
+               <option value=""></option>
+               <option value="cats" selected>Cats</option>
+               <option value="dogs">Dogs</option>
+           </select>
+        `)).toBe("[Cats]")
     })
 })
