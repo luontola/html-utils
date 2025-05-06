@@ -13,6 +13,7 @@
     "lint": "tsc"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
     "@types/lodash": "^4.17.15",
     "@types/node": "^22.13.5",
     "@types/react-dom": "^19.0.4",
@@ -23,6 +24,7 @@
     "vitest": "^3.0.7"
   },
   "dependencies": {
+    "jsdom": "^26.1.0",
     "lodash": "^4.17.21",
     "react-dom": "^19.0.0"
   }

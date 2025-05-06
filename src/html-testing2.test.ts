@@ -41,6 +41,7 @@ describe("visualizeHtml", () => {
 
     test("hides comments", () => {
         expect(visualizeHtml("<!-- foo -->")).toBe("")
+        expect(visualizeHtml("foo<!-- 666 -->bar")).toBe("foobar")
         expect(visualizeHtml("<!-- > -->"), "matches until the end of comment, instead of the first > character").toBe("")
         expect(visualizeHtml("<!--\n>\n-->"), "works with newlines in the comment").toBe("")
     })
