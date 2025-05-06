@@ -5,11 +5,15 @@ import {renderToStaticMarkup} from "react-dom/server"
 
 // Vendored from https://github.com/luontola/html-utils
 
-export function visualizeHtml(html: string | null | undefined | Html | React.ReactElement): string {
+export function visualizeHtml(html: string | null | undefined | Element | Html | React.ReactElement): string {
     if (!html) {
         return ""
     }
     if (typeof html !== "string") {
+        // support DOM elements
+        if (html instanceof Element) {
+            return visualizeHtml(html.outerHTML)
+        }
         // support our HTML templates
         if ("html" in html) {
             return visualizeHtml(html.html)

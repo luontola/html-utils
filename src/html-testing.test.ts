@@ -62,6 +62,15 @@ describe("visualizeHtml", () => {
         expect(visualizeHtml(`<div\ndata-test-icon="🟢"\n></div>`), "works with newlines between attributes").toBe("🟢")
     })
 
+    test("works for DOM elements", () => {
+        const a = document.createElement("p")
+        a.textContent = "foo"
+        expect(visualizeHtml(a)).toBe("foo")
+
+        a.setAttribute("data-test-icon", "🟢")
+        expect(visualizeHtml(a), "uses the element's outerHTML").toBe("🟢 foo")
+    })
+
     test("works for our HTML templates without unwrapping", () => {
         const a = html`<p>foo</p>`
         expect(visualizeHtml(a)).toBe("foo")
