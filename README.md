@@ -1,6 +1,7 @@
 # Esko's HTML Utils
 
-This project contains a couple utilities for writing and testing HTML in JavaScript/Node.js.
+This project contains a couple of utilities for writing and testing HTML in JavaScript/Node.js.
+They can also be ported to other languages relatively easily.
 
 These utilities are not available on npm, but they are meant to be copy-pasted into your project. They come complete
 with unit tests, so they can be evolved to fit your project's needs.
@@ -130,6 +131,16 @@ expect(visualizeHtml2(`
 
 See [html-testing2.ts](src/html-testing2.ts) and [html-testing2.test.ts](src/html-testing2.test.ts)
 
+### Browser-based Implementation
+
+If the tests are run using a web browser instead of Node.js, we can simplify the implementation of `visualizeHtml` by
+using `HTMLElement.innerText` instead of regular expressions to render the page.
+
+Using a browser will enable CSS, so that you can hide elements with `display: none`.
+Otherwise, this implementation works the same as the previous advanced implementation.
+
+See [html-testing3.ts](src/html-testing3.ts) and [html-testing3.test.ts](src/html-testing3.test.ts)
+
 ## Installing
 
 To use this library, download it to be part of your project.
@@ -150,6 +161,9 @@ wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/h
 
 ### Basic Testing Library
 
+Regex-based implementation.
+Can be easily ported to any language.
+
 ```shell
 wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing.ts
 wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing.test.ts
@@ -157,7 +171,20 @@ wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/h
 
 ### Advanced Testing Library
 
+Parser-based implementation.
+Requires a web browser, [jsdom](https://github.com/jsdom/jsdom) or similar.
+Porting to other languages requires an HTML parser and transformer.
+
 ```shell
 wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing2.ts
 wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing2.test.ts
+```
+
+### Browser-based Testing Library
+
+Requires a web browser.
+
+```shell
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing3.ts
+wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing3.test.ts
 ```
