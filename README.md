@@ -129,6 +129,10 @@ expect(visualizeHtml2(`
 `)).toBe("[Cats]")
 ```
 
+This is the most extensible implementation.
+The parser-based approach makes it easy to e.g. implement default visualizations for form elements (left as an exercise
+for the reader), so that you don't need to sprinkle `data-test-content` attributes as much.
+
 See [html-testing2.ts](src/html-testing2.ts) and [html-testing2.test.ts](src/html-testing2.test.ts)
 
 ### Browser-based Implementation
