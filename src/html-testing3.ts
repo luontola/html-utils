@@ -9,63 +9,56 @@ export function visualizeHtml(html: string | null | undefined | Element | Html |
     if (!html) {
         return ""
     }
-    if (typeof html !== "string") {
-        // support DOM elements
-        if (html instanceof Element) {
-            return visualizeHtml(html.outerHTML)
-        }
-        // support our HTML templates
-        if ("html" in html) {
-            return visualizeHtml(html.html)
-        }
-        // support React
-        if (isValidElement(html)) {
-            return visualizeHtml(renderToStaticMarkup(html))
-        }
-        throw new TypeError() // should be unreachable
+    // support raw HTML strings
+    if (typeof html === "string") {
+        return visualizeHtmlString(html)
     }
-    const document = new DOMParser().parseFromString(html, "text/html")
+    // support DOM elements
+    if (html instanceof Element) {
+        // safe copy, because visualizeHtmlElement is destructive
+        return visualizeHtmlElement(html.cloneNode(true) as Element)
+    }
+    // support our HTML templates
+    if ("html" in html) {
+        return visualizeHtmlString(html.html)
+    }
+    // support React
+    if (isValidElement(html)) {
+        return visualizeHtmlString(renderToStaticMarkup(html))
+    }
+    throw new TypeError() // should be unreachable
+}
+
+function visualizeHtmlString(html: string) {
+    const element = new DOMParser().parseFromString(html, "text/html").documentElement
+    return visualizeHtmlElement(element)
+}
+
+function visualizeHtmlElement(element__willBeMutated: Element) {
+    // the data-test-icon visualization is added before the element, so we need a wrapper element to contain it
+    const wrapper = window.document.createElement("div")
+    wrapper.append(element__willBeMutated)
+    // the element must be rendered (by adding it to the DOM), or HTMLElement.innerText will return the same as textContent
+    window.document.body.append(wrapper)
 
     // custom visualization using data-test-icon attribute
-    document.querySelectorAll("[data-test-icon]").forEach(el => {
+    wrapper.querySelectorAll("[data-test-icon]").forEach(el => {
         el.before(` ${el.getAttribute("data-test-icon")} `)
     })
 
     // custom visualization using data-test-content attribute
-    document.querySelectorAll("[data-test-content]").forEach(el => {
-        el.textContent = el.getAttribute("data-test-content")
+    wrapper.querySelectorAll("[data-test-content]").forEach(el => {
+        // HTMLElement.innerText doesn't show the textContent of e.g. textarea elements,
+        // so we must replace the element with one that will always be visible
+        const inline = getComputedStyle(el).display.startsWith("inline")
+        const wrapper = window.document.createElement(inline ? "span" : "div")
+        wrapper.textContent = el.getAttribute("data-test-content")
+        el.replaceWith(wrapper)
     })
 
-    // hidden elements
-    document.querySelectorAll("style").forEach(el => {
-        el.remove()
-    })
-    iterateComments(document, node => node.remove())
-
-    html = document.documentElement.outerHTML
-
-    // strip all HTML tags
-    html = html.replace(/<\/?(a|abbr|b|big|cite|code|em|i|small|span|strong|tt)\b.*?>/sg, "") // inline elements
-        .replace(/<[^>]*>/g, " ")  // block elements
-
-    // replace HTML character entities
-    html = html.replace(/&nbsp;/g, " ")
-        .replace(/&lt;/g, "<") // must be after stripping HTML tags, to avoid creating accidental elements
-        .replace(/&gt;/g, ">")
-        .replace(/&quot;/g, "\"")
-        .replace(/&apos;/g, "'")
-        .replace(/&#39;/g, "'")
-        .replace(/&amp;/g, "&") // must be last, to avoid creating accidental character entities
-
+    const html = wrapper.innerText
+    wrapper.remove()
     return normalizeWhitespace(html)
-}
-
-function iterateComments(document: Document, callback: (node: Comment) => void) {
-    const nodeIterator = document.createNodeIterator(document, NodeFilter.SHOW_COMMENT)
-    let currentNode: Node | null = null
-    while ((currentNode = nodeIterator.nextNode())) {
-        callback(currentNode as Comment)
-    }
 }
 
 export function normalizeWhitespace(s: string): string {

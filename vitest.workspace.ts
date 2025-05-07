@@ -5,6 +5,8 @@ export default defineWorkspace([
         test: {
             name: "jsdom",
             environment: "jsdom",
+            include: ["src/**/*.test.ts"],
+            exclude: ["src/html-testing3.test.ts"],
         },
     },
     {
@@ -18,6 +20,7 @@ export default defineWorkspace([
                     {browser: "chromium"},
                 ],
             },
+            include: ["src/**/*.test.ts"],
         },
     },
 ])
