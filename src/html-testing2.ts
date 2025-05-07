@@ -9,21 +9,26 @@ export function visualizeHtml(html: string | null | undefined | Element | Html |
     if (!html) {
         return ""
     }
-    if (typeof html !== "string") {
-        // support DOM elements
-        if (html instanceof Element) {
-            return visualizeHtml(html.outerHTML)
-        }
-        // support our HTML templates
-        if ("html" in html) {
-            return visualizeHtml(html.html)
-        }
-        // support React
-        if (isValidElement(html)) {
-            return visualizeHtml(renderToStaticMarkup(html))
-        }
-        throw new TypeError() // should be unreachable
+    // support raw HTML strings
+    if (typeof html === "string") {
+        return visualizeHtmlString(html)
     }
+    // support DOM elements
+    if (html instanceof Element) {
+        return visualizeHtmlString(html.outerHTML)
+    }
+    // support our HTML templates
+    if ("html" in html) {
+        return visualizeHtmlString(html.html)
+    }
+    // support React
+    if (isValidElement(html)) {
+        return visualizeHtmlString(renderToStaticMarkup(html))
+    }
+    throw new TypeError() // should be unreachable
+}
+
+function visualizeHtmlString(html: string) {
     const document = new DOMParser().parseFromString(html, "text/html")
 
     // custom visualization using data-test-icon attribute
