@@ -91,13 +91,14 @@ expect(button.html).toContain(`hx-get="/clicker?counter=6"`)
 ```
 
 By default `visualizeHtml` strips all HTML tags.
-But if you add a `data-test-icon` attribute to an element, the element will be replaced with its value.
+But if you add a `data-test-icon` attribute, its value will be shown in front of the element.
 This enables [stringly asserted](https://martinfowler.com/articles/tdd-html-templates.html#BonusLevelStringlyAsserted)
 testing to assert non-textual information.
 
 ```js
 expect(visualizeHtml("<p>one</p><p>two</p>")).toBe("one two")
-expect(visualizeHtml(`<input type="checkbox" checked data-test-icon="☑️">`)).toBe("☑️")
+expect(visualizeHtml(`<label><input type="checkbox" checked data-test-icon="☑️"> Toggle</label>`))
+    .toBe("☑️ Toggle")
 ```
 
 In addition to DOM elements, HTML strings and [our HTML templates](#html-templating), `visualizeHtml` works also for
@@ -110,9 +111,11 @@ See [html-testing.ts](src/html-testing.ts) and [html-testing.test.ts](src/html-t
 
 The previous `visualizeHtml` is implemented using just regular expressions.
 Regular expressions are fast and portable, but they have limited expressiveness.
+In [html-testing2.ts](src/html-testing2.ts) there is a more flexible parser-based implementation of `visualizeHtml`.
 
-In [html-testing2.ts](src/html-testing2.ts) there is a parser-based implementation of `visualizeHtml`.
-It adds support for a `data-test-content` attribute that will replace the whole element, including its children:
+It adds support for a `data-test-content` attribute that will replace the element's content with a custom visualization.
+(The `data-test-icon` only *adds* text in front of the element.)
+This makes it capable of visualizing e.g. `<textarea>` and `<select>` elements.
 
 ```js
 expect(visualizeHtml2(`<textarea data-test-content="[foo]">foo</textarea>`)).toBe("[foo]")

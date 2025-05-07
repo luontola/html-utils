@@ -60,7 +60,8 @@ describe("examples", () => {
 
     test("visualizeHtml and data-test-icon", () => {
         expect(visualizeHtml("<p>one</p><p>two</p>")).toBe("one two")
-        expect(visualizeHtml(`<input type="checkbox" checked data-test-icon="☑️">`)).toBe("☑️")
+        expect(visualizeHtml(`<label><input type="checkbox" checked data-test-icon="☑️"> Toggle</label>`))
+            .toBe("☑️ Toggle")
     })
 
     test("visualizeHtml2 and data-test-content", () => {
