@@ -37,7 +37,6 @@ const HIDDEN_TAGS = new Set(["STYLE", "SCRIPT", "NOSCRIPT"])
 const INLINE_TAGS = new Set(["A", "ABBR", "B", "BIG", "CITE", "CODE", "EM", "I", "SMALL", "SPAN", "STRONG", "TT"])
 
 function visualizeHtmlElement(element: Element) {
-    const walker = element.ownerDocument.createTreeWalker(element, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT)
     let result = ""
 
     function visit(node: Node) {
@@ -76,7 +75,7 @@ function visualizeHtmlElement(element: Element) {
         }
     }
 
-    visit(walker.root)
+    visit(element)
     return normalizeWhitespace(result)
 }
 
