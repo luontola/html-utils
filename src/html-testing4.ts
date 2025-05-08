@@ -15,8 +15,7 @@ export function visualizeHtml(html: string | null | undefined | Element | Html |
     }
     // support DOM elements
     if (html instanceof Element) {
-        // safe copy, because visualizeHtmlElement is destructive
-        return visualizeHtmlElement(html.cloneNode(true) as Element)
+        return visualizeHtmlElement(html)
     }
     // support our HTML templates
     if ("html" in html) {
@@ -34,32 +33,52 @@ function visualizeHtmlString(html: string) {
     return visualizeHtmlElement(element)
 }
 
-function visualizeHtmlElement(element__willBeMutated: Element) {
-    // the data-test-icon visualization is added before the element, so we need a wrapper element to contain it
-    const wrapper = window.document.createElement("div")
-    wrapper.append(element__willBeMutated)
-    // the element must be rendered (by adding it to the DOM), or HTMLElement.innerText will return the same as textContent
-    window.document.body.append(wrapper)
+function visualizeHtmlElement(element: Element) {
+    const walker = element.ownerDocument.createTreeWalker(element, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT)
+    let result = ""
 
-    // custom visualization using data-test-icon attribute
-    wrapper.querySelectorAll("[data-test-icon]").forEach(el => {
-        el.before(` ${el.getAttribute("data-test-icon")} `)
-    })
+    function visit(node: Node) {
+        if (node.nodeType == Node.TEXT_NODE) {
+            result += node.textContent
+        } else if (node.nodeType == Node.ELEMENT_NODE) {
+            const el = node as Element
+            if (HIDDEN_TAGS.has(el.tagName)) {
+                return
+            }
 
-    // custom visualization using data-test-content attribute
-    wrapper.querySelectorAll("[data-test-content]").forEach(el => {
-        // HTMLElement.innerText doesn't show the textContent of e.g. textarea elements,
-        // so we must replace the element with one that will always be visible
-        const inline = getComputedStyle(el).display.startsWith("inline")
-        const wrapper = window.document.createElement(inline ? "span" : "div")
-        wrapper.textContent = el.getAttribute("data-test-content")
-        el.replaceWith(wrapper)
-    })
+            // custom visualization using data-test-icon attribute
+            const testIcon = el.getAttribute("data-test-icon")
+            if (testIcon) {
+                result += " " + testIcon + " "
+            }
 
-    const html = wrapper.innerText
-    wrapper.remove()
-    return normalizeWhitespace(html)
+            const isBlock = !INLINE_TAGS.has(el.tagName)
+            if (isBlock) {
+                result += " "
+            }
+
+            // custom visualization using data-test-content attribute
+            const testContent = el.getAttribute("data-test-content")
+            if (testContent !== null) {
+                result += testContent
+            } else {
+                for (let child = el.firstChild; child; child = child.nextSibling) {
+                    visit(child)
+                }
+            }
+
+            if (isBlock) {
+                result += " "
+            }
+        }
+    }
+
+    visit(walker.root)
+    return normalizeWhitespace(result)
 }
+
+const HIDDEN_TAGS = new Set(["STYLE", "SCRIPT", "NOSCRIPT"])
+const INLINE_TAGS = new Set(["A", "ABBR", "B", "BIG", "CITE", "CODE", "EM", "I", "SMALL", "SPAN", "STRONG", "TT"])
 
 export function normalizeWhitespace(s: string): string {
     return s.replace(/\s+/g, " ").trim()

@@ -67,6 +67,7 @@ describe("visualizeHtml", () => {
         expect(visualizeHtml(`<textarea data-test-content="[foo]">foo</textarea>`)).toBe("[foo]")
         expect(visualizeHtml(`x<div data-test-content="🟢">y</div>z`), "spacing, block elements").toBe("x 🟢 z")
         expect(visualizeHtml(`x<span data-test-content="🟢">y</span>z`), "spacing, inline elements").toBe("x🟢z")
+        expect(visualizeHtml(`x<span data-test-content="">y</span>z`), "empty value hides the element content").toBe("xz")
     })
 
     test("data-test-icon and data-test-content can coexist", () => {

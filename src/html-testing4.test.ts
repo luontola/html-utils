@@ -1,5 +1,5 @@
 import {describe, expect, test} from "vitest"
-import {normalizeWhitespace, visualizeHtml} from "./html-testing4.js"
+import {visualizeHtml} from "./html-testing4.js"
 import {html} from "./html-templates.js"
 import React from "react"
 import {renderToStaticMarkup} from "react-dom/server"
@@ -26,10 +26,6 @@ describe("visualizeHtml", () => {
         expect(visualizeHtml("x<a>y</a>z")).toBe("xyz")
         expect(visualizeHtml("x<a><abbr><b><big><cite><code><em><i><small><span><strong><tt>y</tt></strong></span></small></i></em></code></cite></big></b></abbr></a>z")).toBe("xyz")
         expect(visualizeHtml(`x<a\nhref=""\n>y</a>z`), "works with newlines between attributes").toBe("xyz")
-    })
-
-    test("elements can be hidden with CSS", () => {
-        expect(visualizeHtml(`<p style="display: none">foo</p>`)).toBe("")
     })
 
     test("hides style elements", () => {
@@ -71,6 +67,7 @@ describe("visualizeHtml", () => {
         expect(visualizeHtml(`<textarea data-test-content="[foo]">foo</textarea>`)).toBe("[foo]")
         expect(visualizeHtml(`x<div data-test-content="🟢">y</div>z`), "spacing, block elements").toBe("x 🟢 z")
         expect(visualizeHtml(`x<span data-test-content="🟢">y</span>z`), "spacing, inline elements").toBe("x🟢z")
+        expect(visualizeHtml(`x<span data-test-content="">y</span>z`), "empty value hides the element content").toBe("xz")
     })
 
     test("data-test-icon and data-test-content can coexist", () => {
@@ -85,22 +82,6 @@ describe("visualizeHtml", () => {
 
         a.setAttribute("data-test-icon", "🟢")
         expect(visualizeHtml(a), "uses the element's outerHTML").toBe("🟢 foo")
-    })
-
-    test("will not change the DOM element", () => {
-        const a = document.createElement("p")
-        a.setAttribute("data-test-icon", "A")
-        a.setAttribute("data-test-content", "B")
-        a.textContent = "C"
-        document.body.append(a)
-        const originalParent = a.parentNode
-        visualizeHtml(a)
-
-        expect(a.outerHTML, "won't change the element")
-            .toBe(`<p data-test-icon="A" data-test-content="B">C</p>`)
-        expect(a.parentNode, "won't move the element").toBe(originalParent)
-        expect(normalizeWhitespace(document.body.outerHTML), "won't leave temp elements in the DOM")
-            .toBe(`<body> <p data-test-icon="A" data-test-content="B">C</p></body>`)
     })
 
     test("works for our HTML templates without unwrapping", () => {

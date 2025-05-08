@@ -6,7 +6,7 @@ export default defineWorkspace([
             name: "jsdom",
             environment: "jsdom",
             include: ["src/**/*.test.ts"],
-            exclude: ["src/html-testing3.test.ts", "src/html-testing4.test.ts"],
+            exclude: ["src/html-testing3.test.ts"],
         },
     },
     {
