@@ -135,10 +135,10 @@ for the reader), so that you don't need to sprinkle `data-test-content` attribut
 
 See [html-testing2.ts](src/html-testing2.ts) and [html-testing2.test.ts](src/html-testing2.test.ts)
 
-### Browser-based Implementation
+### Browser-rendered Implementation
 
-If the tests are run using a web browser instead of Node.js, we can simplify the implementation of `visualizeHtml` by
-using `HTMLElement.innerText` instead of regular expressions to render the page.
+If the tests are run using a web browser instead of Node.js, we can also implement `visualizeHtml` by relying on
+`HTMLElement.innerText` which is aware of the rendered appearance of the text content.
 
 Using a browser will enable CSS, so that you can hide elements with `display: none`.
 Otherwise, this implementation works the same as the previous advanced implementation.
@@ -177,14 +177,14 @@ wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/h
 
 Parser-based implementation.
 Requires a web browser, [jsdom](https://github.com/jsdom/jsdom) or similar.
-Porting to other languages requires an HTML parser and transformer.
+Porting to other languages requires an HTML parser.
 
 ```shell
 wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing2.ts
 wget https://raw.githubusercontent.com/luontola/html-utils/refs/heads/main/src/html-testing2.test.ts
 ```
 
-### Browser-based Testing Library
+### Browser-rendered Testing Library
 
 Requires a web browser.
 
