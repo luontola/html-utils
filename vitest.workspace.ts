@@ -16,6 +16,7 @@ export default defineWorkspace([
                 enabled: true,
                 provider: "playwright",
                 headless: true,
+                screenshotFailures: false, // most tests don't add any elements to the document, so the screenshots would be blank
                 instances: [
                     {browser: "chromium"},
                 ],

@@ -10,7 +10,7 @@
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "autotest": "vitest watch",
-    "lint": "tsc"
+    "lint": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.7",
