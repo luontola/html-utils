@@ -39,6 +39,14 @@ describe("visualizeHtml", () => {
             </style>`), "with type attribute").toBe("")
     })
 
+    test("hides script elements", () => {
+        expect(visualizeHtml(`<script>foo()</script>`)).toBe("")
+    })
+
+    test("hides noscript elements", () => {
+        expect(visualizeHtml(`<noscript>foo</noscript>`)).toBe("")
+    })
+
     test("hides comments", () => {
         expect(visualizeHtml("<!-- foo -->")).toBe("")
         expect(visualizeHtml("foo<!-- 666 -->bar")).toBe("foobar")

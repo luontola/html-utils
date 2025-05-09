@@ -34,6 +34,8 @@ function visualizeHtmlString(html: string) {
 
     // hidden elements
     html = html.replace(/<style\b.*?>.*?<\/style>/sg, "")
+    html = html.replace(/<script\b.*?>.*?<\/script>/sg, "")
+    html = html.replace(/<noscript\b.*?>.*?<\/noscript>/sg, "")
     html = html.replace(/<!--.*?-->/sg, "")
 
     // strip all HTML tags

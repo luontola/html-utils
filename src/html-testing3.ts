@@ -30,7 +30,7 @@ export function visualizeHtml(html: string | null | undefined | Element | Html |
 }
 
 function visualizeHtmlString(html: string) {
-    const element = new DOMParser().parseFromString(html, "text/html").documentElement
+    const element = new DOMParser().parseFromString("<body>" + html, "text/html").documentElement
     return visualizeHtmlElement(element)
 }
 
